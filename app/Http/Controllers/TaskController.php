@@ -30,7 +30,27 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
 
-        Task::create($request->validated());
+        $task = $request->validated();
+
+        Task::create($task);
+
+        return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
+    }
+
+    public function edit(Task $task)
+    {
+        $employees = Employee::get();
+
+        return view('tasks.edit', [
+            'task' => $task,
+            'employees' => $employees,
+        ]);
+    }
+
+    public function update(TaskRequest $request, Task $task)
+    {
+
+        $task->update($request->validated());
 
         return redirect()->route('tasks.index')->with('success', 'Task created successfully.');
     }

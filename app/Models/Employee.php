@@ -27,6 +27,4 @@ class Employee extends Model
         'birth_date' => 'date',
         'hire_date' => 'date',
     ];
-
-    
 }

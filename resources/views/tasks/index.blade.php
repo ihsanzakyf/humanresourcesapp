@@ -65,7 +65,7 @@
                                 <tr>
                                     <td>{{ $task->title }}</td>
                                     <td>{{ $task->employee->fullname }}</td>
-                                    <td>{{ $task->due_date }}</td>
+                                    <td>{{ $task->due_date->format('Y-m-d') }}</td>
                                     <td>
                                         @if ($task->status == 'done')
                                             <span class="badge bg-success rounded-cs">Done</span>
@@ -103,7 +103,7 @@
                                                             <i class="bi bi-x me-1"></i> Mark as Pending
                                                         </a>
                                                     @endif
-                                                    <a href="#"
+                                                    <a href="{{ route('tasks.edit', $task->id) }}"
                                                         class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
                                                         style="background-color:#0d6efd;">
                                                         <i class="bi bi-pencil me-1"></i> Edit

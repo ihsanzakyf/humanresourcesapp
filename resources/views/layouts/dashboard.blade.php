@@ -17,16 +17,12 @@
 
     <!-- DataTable -->
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/simple-datatables/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/table-datatable.css') }}">
-
-    <!-- Perfect Scrollbar -->
-    <link rel="stylesheet" href="{{ asset('maze/dist/assets/extensions/pefect-scrollbar/perfect-scrollbar.css') }}">
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/bootstrap-icons/bootstrap-icons.css') }}">
 
     <!-- Flatpickr -->
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.css') }}">
+
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <style>
         .dataTable-selector.form-select,
@@ -199,18 +195,21 @@
     <script src="{{ asset('mazer/dist/assets/extensions/simple-datatables/umd/simple-datatables.js') }}"></script>
     <script src="{{ asset('mazer/dist/assets/static/js/pages/simple-datatables.js') }}"></script>
 
-    <!-- Icons -->
-    <script src="{{ asset('mazer/dist/assets/extensions/bootstrap-icons/bootstrap-icons.js') }}"></script>
-
     <!-- Flatpickr -->
     <script src="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.js') }}"></script>
 
-    <script>
-        const date = flatpickr('.datetime', {
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+        const date = flatpickr('.date', {
             dateFormat: 'Y-m-d',
             minDate: "today",
+            enableTime: false,
         });
     </script>
+    @stack('scripts')
 </body>
 
 </html>
