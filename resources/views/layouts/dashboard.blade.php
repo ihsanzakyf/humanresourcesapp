@@ -25,6 +25,24 @@
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/bootstrap-icons/bootstrap-icons.css') }}">
 
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.css') }}">
+
+    <style>
+        .dataTable-selector.form-select,
+        .dataTable-input,
+        .dataTable-info,
+        .dataTable-pagination-list {
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .rounded-cs {
+            border-radius: 10px;
+            font-size: 13px;
+        }
+    </style>
+
     @stack('styles')
 </head>
 
@@ -183,6 +201,16 @@
 
     <!-- Icons -->
     <script src="{{ asset('mazer/dist/assets/extensions/bootstrap-icons/bootstrap-icons.js') }}"></script>
+
+    <!-- Flatpickr -->
+    <script src="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.js') }}"></script>
+
+    <script>
+        const date = flatpickr('.datetime', {
+            dateFormat: 'Y-m-d',
+            minDate: "today",
+        });
+    </script>
 </body>
 
 </html>

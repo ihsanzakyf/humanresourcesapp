@@ -32,16 +32,24 @@
                 </div>
             </div>
         </div>
+
         <section class="section">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Task List</h5>
-                </div>
-                <div class="card-body">
                     <div class="d-flex">
-                        <a href="#" class="btn btn-sm btn-primary mb-3 ms-auto rounded-cs"><i class="bi bi-plus"></i>
+                        <h5 class="card-title">Task List</h5>
+                        <a href="{{ route('tasks.create') }}" class="btn btn-sm btn-primary ms-auto rounded-cs"><i
+                                class="bi bi-plus"></i>
                             Add New</a>
                     </div>
+                </div>
+                <div class="card-body">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <table class="table table-striped" id="table1">
                         <thead>
                             <tr>
@@ -114,22 +122,4 @@
                 </div>
             </div>
         </section>
-    </div>
-@endsection
-
-@push('styles')
-    <style>
-        .dataTable-selector.form-select,
-        .dataTable-input,
-        .dataTable-info,
-        .dataTable-pagination-list {
-            border-radius: 10px;
-            font-size: 12px;
-        }
-
-        .rounded-cs {
-            border-radius: 10px;
-            font-size: 13px;
-        }
-    </style>
-@endpush
+    @endsection
