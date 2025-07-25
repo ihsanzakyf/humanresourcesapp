@@ -46,7 +46,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-                <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+                <form action="{{ route('tasks.update', $task->id) }}" id="form-update-{{ $task->id }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -78,8 +78,8 @@
                         <input type="datetime-local"
                             class="form-control form-control-sm rounded-cs @error('due_date') is-invalid @enderror date"
                             value="{{ old('due_date', $task->due_date) }}" placeholder="Select Due Date"
-                            min="{{ now()->format('Y-m-d') }}" max="{{ now()->addYear()->format('Y-m-d') }}" step="1"
-                            id="due_date" name="due_date">
+                            min="{{ now()->format('Y-m-d') }}" max="{{ now()->addYear()->format('Y-m-d') }}"
+                            step="1" id="due_date" name="due_date">
                         @error('due_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -109,10 +109,12 @@
                         <a href="{{ route('tasks.index') }}" class="btn btn-sm rounded-cs btn-secondary"><i
                                 class="bi bi-arrow-left"></i> Back to
                             Task List</a>
-                        <button type="submit" class="btn btn-sm rounded-cs btn-primary"><i class="bi bi-upload"></i>
+                        <button type="button" class="btn btn-sm rounded-cs btn-primary"
+                            data-swal-form-id="form-update-{{ $task->id }}"><i class="bi bi-upload"></i>
                             Update Task</button>
                     </div>
                 </form>
+                <x-sweetalertaction form-id="form-update-{{ $task->id }}" action="update" />
             </div>
         </div>
     </section>

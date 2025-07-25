@@ -44,12 +44,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
+
+                    <x-sweetalertsession />
+
                     <table class="table table-striped" id="table1">
                         <thead>
                             <tr>
@@ -108,10 +105,22 @@
                                                         style="background-color:#0d6efd;">
                                                         <i class="bi bi-pencil me-1"></i> Edit
                                                     </a>
-                                                    <a href="#" class="dropdown-item btn btn-sm text-white rounded-cs"
-                                                        style="background-color:#dc3545;">
-                                                        <i class="bi bi-trash me-1"></i> Delete
-                                                    </a>
+
+                                                    <form id="form-delete-{{ $task->id }}" method="POST"
+                                                        class="d-inline" action="{{ route('tasks.destroy', $task->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button"
+                                                            class="dropdown-item btn btn-sm text-white rounded-cs"
+                                                            data-swal-form-id="form-delete-{{ $task->id }}"
+                                                            style="background-color:#dc3545;">
+                                                            <i class="bi bi-trash me-1"></i> Delete
+                                                        </button>
+                                                    </form>
+
+                                                    <x-sweetalertaction form-id="form-delete-{{ $task->id }}"
+                                                        action="delete" />
+
                                                 </div>
                                             </div>
                                         </div>
