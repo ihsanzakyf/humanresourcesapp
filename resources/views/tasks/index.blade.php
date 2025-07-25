@@ -82,19 +82,19 @@
                                                 </button>
                                                 <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton"
                                                     style="min-width: 40px;">
-                                                    <a href="#"
+                                                    <a href="{{ route('tasks.show', $task->id) }}"
                                                         class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
                                                         style="background-color:#0dcaf0;">
                                                         <i class="bi bi-eye me-1"></i> View
                                                     </a>
                                                     @if ($task->status == 'pending')
-                                                        <a href="#"
+                                                        <a href="{{ route('tasks.done', $task->id) }}"
                                                             class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
                                                             style="background-color:#198754;">
                                                             <i class="bi bi-check me-1"></i> Mark as Done
                                                         </a>
                                                     @else
-                                                        <a href="#"
+                                                        <a href="{{ route('tasks.pending', $task->id) }}"
                                                             class="dropdown-item btn btn-sm text-dark mb-1 rounded-cs"
                                                             style="background-color:#ffc107;">
                                                             <i class="bi bi-x me-1"></i> Mark as Pending

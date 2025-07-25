@@ -90,16 +90,16 @@
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
 
-                        <li class="sidebar-item active">
+                        <li class="sidebar-item @if (Request::is('dashboard')) active @else '' @endif">
                             <a href="{{ route('dashboard') }}" class="sidebar-link">
                                 <i class="bi bi-grid-fill"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
+                        <li class="sidebar-item @if (Request::is('tasks*')) active @else '' @endif">
                             <a href="{{ route('tasks.index') }}" class="sidebar-link">
-                                <i class="bi bi-check bi-circle-fill"></i>
+                                <i class="bi bi-list-task"></i>
                                 <span>Tasks</span>
                             </a>
                         </li>

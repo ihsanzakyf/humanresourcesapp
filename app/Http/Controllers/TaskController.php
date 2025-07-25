@@ -55,6 +55,31 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'Task updated successfully.');
     }
 
+    public function show(Task $task)
+    {
+        return view('tasks.show', [
+            'task' => $task,
+        ]);
+    }
+
+    public function done(Int $id)
+    {
+        $task = Task::findOrFail($id);
+
+        $task->update(['status' => 'done']);
+
+        return redirect()->route('tasks.index')->with('success', 'Task marked as done successfully.');
+    }
+
+    public function pending(Int $id)
+    {
+        $task = Task::findOrFail($id);
+
+        $task->update(['status' => 'pending']);
+
+        return redirect()->route('tasks.index')->with('success', 'Task marked as pending successfully.');
+    }
+
     public function destroy(Task $task)
     {
         $task->delete();
