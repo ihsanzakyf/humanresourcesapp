@@ -104,8 +104,8 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                        <li class="sidebar-item @if (Request::is('employees*')) active @else '' @endif">
+                            <a href="{{ route('employees.index') }}" class="sidebar-link">
                                 <i class="bi bi-people-fill"></i>
                                 <span>Employees</span>
                             </a>
