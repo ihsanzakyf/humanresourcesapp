@@ -35,14 +35,46 @@
 
         <section class="section">
             <div class="card">
+
                 <div class="card-header">
-                    <div class="d-flex">
-                        <h5 class="card-title">Employee List</h5>
-                        <a href="{{ route('employees.create') }}" class="btn btn-sm btn-primary ms-auto rounded-cs"><i
-                                class="bi bi-plus"></i>
-                            Add New</a>
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="card-title mb-0">Employee List</h5>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <select class="form-select form-select-sm w-auto rounded-cs" id="bulan"
+                                onchange="doReload()">
+                                <option value="">-- Select Month --</option>
+                                @foreach ($list_bulan as $key => $val)
+                                    <option value="{{ $key }}" {{ request('b') == $key ? 'selected' : '' }}>
+                                        {{ $val }}</option>
+                                @endforeach
+                            </select>
+
+                            <select class="form-select form-select-sm w-auto rounded-cs" id="tahun"
+                                onchange="doReload()">
+                                <option value="">-- Select Year --</option>
+                                @foreach ($list_tahun as $tahun)
+                                    <option value="{{ $tahun }}" {{ request('t') == $tahun ? 'selected' : '' }}>
+                                        {{ $tahun }}</option>
+                                @endforeach
+                            </select>
+
+                            <select class="form-select form-select-sm w-auto rounded-cs" id="status"
+                                onchange="doReload()">
+                                <option value="">-- Select Status --</option>
+                                <option value="active" {{ request('a') == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ request('a') == 'inactive' ? 'selected' : '' }}>Inactive
+                                </option>
+                            </select>
+
+                            <a href="{{ route('employees.create') }}" class="btn btn-sm btn-primary rounded-cs">
+                                <i class="bi bi-plus"></i> Add New
+                            </a>
+                        </div>
                     </div>
                 </div>
+
                 <div class="card-body">
 
                     <x-sweetalertsession />
@@ -52,8 +84,6 @@
                             <tr>
                                 <th>Fullname</th>
                                 <th>Email</th>
-                                <th>Birth Date</th>
-                                <th>Hire Date</th>
                                 <th>Department</th>
                                 <th>Role</th>
                                 <th>Status</th>
@@ -61,13 +91,11 @@
                                 <th>Option</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="employee-table-body">
                             @foreach ($employees as $employee)
                                 <tr>
                                     <td>{{ $employee->fullname }}</td>
                                     <td>{{ $employee->email }}</td>
-                                    <td>{{ $employee->birth_date->format('d F Y') }}</td>
-                                    <td>{{ $employee->hire_date->format('d F Y') }}</td>
                                     <td>{{ $employee->department->name }}</td>
                                     <td>{{ $employee->role->title }}</td>
                                     <td>
@@ -127,3 +155,20 @@
             </div>
         </section>
     @endsection
+
+    <script>
+        function doReload() {
+            let url = "{{ url('employees') }}";
+            let query = "";
+
+            let b = $('#bulan').val();
+            let t = $('#tahun').val();
+            let a = $('#status').val();
+
+            if (b) query += (query ? '&' : '?') + 'b=' + b;
+            if (t) query += (query ? '&' : '?') + 't=' + t;
+            if (a) query += (query ? '&' : '?') + 'a=' + a;
+
+            window.location.href = url + query;
+        }
+    </script>

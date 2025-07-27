@@ -22,6 +22,18 @@
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.css') }}">
 
     <style>
+        /* Untuk Chrome, Safari, Edge, Opera */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Untuk Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
         .dataTable-selector.form-select,
         .dataTable-input,
         .dataTable-info,
@@ -195,10 +207,11 @@
     <!-- Flatpickr -->
     <script src="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.js') }}"></script>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script type="text/javascript">
         const date = flatpickr('.date', {
             dateFormat: 'Y-m-d',
-            minDate: "today",
             enableTime: false,
         });
     </script>

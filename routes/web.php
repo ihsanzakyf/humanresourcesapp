@@ -10,9 +10,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::resource('/tasks', TaskController::class);
 Route::resource('/employees', EmployeeController::class);
+
+// Filtering
+Route::get('/employees/filter', [EmployeeController::class, 'filter'])->name('employees.filter');
 
 Route::get('/tasks/{id}/done', [TaskController::class, 'done'])->name('tasks.done');
 Route::get('/tasks/{id}/pending', [TaskController::class, 'pending'])->name('tasks.pending');

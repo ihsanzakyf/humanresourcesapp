@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Employee extends Model
 {
@@ -36,5 +37,24 @@ class Employee extends Model
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public static function filteringEmployees($bulan, $tahun, $status)
+    {
+        $query = self::query()->whereNotNull('created_at');
+
+        if (!empty($bulan)) {
+            $query->whereMonth('created_at', $bulan);
+        }
+
+        if (!empty($tahun)) {
+            $query->whereYear('created_at', $tahun);
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        return $query->orderByDesc('created_at')->get();
     }
 }
