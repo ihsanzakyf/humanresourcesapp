@@ -86,15 +86,28 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
-    }
+        $employee = Employee::findOrFail($id);
+        $departments = Department::get();
+        $roles = Role::get();
 
+        return view('employees.edit', [
+            'employee' => $employee,
+            'departments' => $departments,
+            'roles' => $roles,
+        ])->with('title', 'Edit Employee')
+            ->with('subtitle', 'Edit details of the selected employee');
+    }
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EmployeeRequest $request, string $id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        $data = $request->validated();
+
+        $employee->update($data);
+
+        return redirect()->route('employees.index')->with('success', 'Employee updated successfully.');
     }
 
     /**
@@ -102,6 +115,9 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        $employee->delete();
+
+        return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');
     }
 }

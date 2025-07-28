@@ -97,7 +97,7 @@
                                     <td>{{ $employee->fullname }}</td>
                                     <td>{{ $employee->email }}</td>
                                     <td>{{ $employee->department->name }}</td>
-                                    <td>{{ $employee->role->title }}</td>
+                                    <td>{{ $employee->role->title ?? '-' }}</td>
                                     <td>
                                         @if ($employee->status == 'active')
                                             <span class="badge bg-success rounded-cs">Active</span>

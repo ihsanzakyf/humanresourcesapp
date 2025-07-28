@@ -40,14 +40,16 @@
                 <h5 class="card-title">Create Employee</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('employees.store') }}" method="POST">
+                <form action="{{ route('employees.update', $employee->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="mb-3">
+
                         <label for="fullname" class="form-label">Fullname</label>
                         <input type="text"
                             class="form-control form-control-sm rounded-cs @error('fullname') is-invalid @enderror"
-                            value="{{ old('fullname') }}" placeholder="Enter Task fullname" maxlength="100" id="fullname"
-                            name="fullname">
+                            value="{{ old('fullname', $employee->fullname) }}" placeholder="Enter Task fullname"
+                            maxlength="100" id="fullname" name="fullname">
                         @error('fullname')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -56,17 +58,18 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email"
                             class="form-control form-control-sm rounded-cs @error('email') is-invalid @enderror"
-                            value="{{ old('email') }}" placeholder="Enter Email" id="email" name="email">
+                            value="{{ old('email', $employee->email) }}" placeholder="Enter Email" id="email"
+                            name="email">
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="phone_number" class="form-label">Phone Number</label>
-                        <input type="number" inputmode="numeric"
+                        <input type="text" inputmode="numeric"
                             class="form-control form-control-sm rounded-cs @error('phone_number') is-invalid @enderror"
-                            value="{{ old('phone_number') }}" placeholder="Enter Phone Number" id="phone_number"
-                            name="phone_number">
+                            value="{{ old('phone_number', $employee->phone_number) }}" placeholder="Enter Phone Number"
+                            id="phone_number" name="phone_number">
                         @error('phone_number')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -74,7 +77,7 @@
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <textarea name="address" id="address" cols="30" rows="5"
-                            class="form-control form-control-sm rounded-cs @error('address') is-invalid @enderror">{{ old('address') }}</textarea>
+                            class="form-control form-control-sm rounded-cs @error('address') is-invalid @enderror">{{ old('address', $employee->address) }}</textarea>
                         @error('address')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -82,19 +85,20 @@
 
                     <div class="mb-3">
                         <label for="birth_date" class="form-label">Birth Date</label>
-                        <input type="datetime-local"
+                        <input type="date"
                             class="form-control form-control-sm rounded-cs @error('birth_date') is-invalid @enderror date"
-                            value="{{ old('birth_date') }}" placeholder="Select Birth Date" id="birth_date"
-                            name="birth_date">
+                            value="{{ old('birth_date', $employee->birth_date->format('Y-m-d')) }}"
+                            placeholder="Select Birth Date" id="birth_date" name="birth_date">
                         @error('birth_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="hire_date" class="form-label">Hire Date</label>
-                        <input type="datetime-local"
+                        <input type="date"
                             class="form-control form-control-sm rounded-cs @error('hire_date') is-invalid @enderror date"
-                            value="{{ old('hire_date') }}" placeholder="Select Hire Date" id="hire_date" name="hire_date">
+                            value="{{ old('hire_date', $employee->hire_date->format('Y-m-d')) }}"
+                            placeholder="Select Hire Date" id="hire_date" name="hire_date">
                         @error('hire_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -106,7 +110,7 @@
                             <option value="">Select Department</option>
                             @foreach ($departments as $department)
                                 <option value="{{ $department->id }}"
-                                    {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                    {{ old('department_id', $employee->department_id) == $department->id ? 'selected' : '' }}>
                                     {{ $department->name }}</option>
                             @endforeach
                         </select>
@@ -121,7 +125,8 @@
                             class="form-select form-select-sm rounded-cs @error('role_id') is-invalid @enderror">
                             <option value="">Select Role</option>
                             @foreach ($roles as $role)
-                                <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                <option value="{{ $role->id }}"
+                                    {{ old('role_id', $employee->role_id) == $role->id ? 'selected' : '' }}>
                                     {{ $role->title }}</option>
                             @endforeach
                         </select>
@@ -144,20 +149,21 @@
 
                     <div class="mb-3">
                         <label for="salary" class="form-label">Salary</label>
-                        <input type="number" min="0"
+                        <input type="text" min="0"
                             class="form-control form-control-sm rounded-cs @error('salary') is-invalid @enderror"
-                            value="{{ old('salary') }}" placeholder="Enter Salary" id="salary" name="salary">
+                            value="{{ old('salary', $employee->salary) }}" placeholder="Enter Salary" id="salary"
+                            name="salary">
                         @error('salary')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
                     <div>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-sm rounded-cs btn-secondary"><i
+                        <a href="{{ route('employees.index') }}" class="btn btn-sm rounded-cs btn-secondary"><i
                                 class="bi bi-arrow-left"></i> Back to
                             Task List</a>
                         <button type="submit" class="btn btn-sm rounded-cs btn-primary"><i class="bi bi-upload"></i>
-                            Create Employee</button>
+                            Update Employee</button>
                     </div>
                 </form>
             </div>
