@@ -39,6 +39,11 @@ class Employee extends Model
         return $this->belongsTo(Role::class);
     }
 
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
     public static function filteringEmployees($bulan, $tahun, $status)
     {
         $query = self::query()->whereNotNull('created_at');

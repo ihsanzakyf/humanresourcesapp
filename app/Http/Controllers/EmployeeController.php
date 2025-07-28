@@ -8,6 +8,7 @@ use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Role;
+use App\Models\Task;
 
 class EmployeeController extends Controller
 {
@@ -116,6 +117,12 @@ class EmployeeController extends Controller
     public function destroy(string $id)
     {
         $employee = Employee::findOrFail($id);
+        $taskEmployee = Task::where('assigned_to', $id)->first();
+
+        if ($taskEmployee) {
+            return redirect()->route('employees.index')->with('error', 'Cannot delete employee because they have assigned tasks.');
+        }
+
         $employee->delete();
 
         return redirect()->route('employees.index')->with('success', 'Employee deleted successfully.');

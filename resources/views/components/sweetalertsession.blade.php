@@ -29,7 +29,9 @@
             title: 'Failed',
             text: '{{ session('error') }}',
             showConfirmButton: false,
+            timer: 2000,
             position: 'top-end',
+            toast: true,
             customClass: {
                 popup: 'rounded-cs',
             }
