@@ -59,16 +59,6 @@ class EmployeeController extends Controller
         return redirect()->route('employees.index')->with('success', 'Employee created successfully.');
     }
 
-    public function filter(Request $request)
-    {
-        $employees = Employee::query()
-            ->when($request->recent_days, fn($q) => $q->recent($request->recent_days))
-            ->when($request->sort, fn($q) => $q->sortByHireDate($request->sort))
-            ->get();
-
-        return response()->json($employees);
-    }
-
     /**
      * Display the specified resource.
      */

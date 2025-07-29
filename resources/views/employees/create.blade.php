@@ -153,9 +153,9 @@
                     </div>
 
                     <div>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-sm rounded-cs btn-secondary"><i
+                        <a href="{{ route('employees.index') }}" class="btn btn-sm rounded-cs btn-secondary"><i
                                 class="bi bi-arrow-left"></i> Back to
-                            Task List</a>
+                            Employee List</a>
                         <button type="submit" class="btn btn-sm rounded-cs btn-primary"><i class="bi bi-upload"></i>
                             Create Employee</button>
                     </div>

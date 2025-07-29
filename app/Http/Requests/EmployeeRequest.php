@@ -22,13 +22,12 @@ class EmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
-        $employeeId = $this->route('employees');
+        $employeeId = $this->route('employee');
 
         return [
             'fullname' => 'required|max:100',
-            'email' => 'required|email',
-            Rule::unique('employees', 'email')->ignore($employeeId),
-            'phone_number' => 'required|numeric|digits_between:8,15',
+            'email' => 'required|email|unique:employees,email,' . $employeeId,
+            'phone_number' => 'required|numeric|digits_between:8,15|unique:employees,phone_number,' . $employeeId,
             'address' => 'required|max:255',
             'birth_date' => 'required|date|before:today',
             'hire_date' => 'required|date|after_or_equal:birth_date',
@@ -52,6 +51,7 @@ class EmployeeRequest extends FormRequest
             'phone_number.required' => 'Phone Number is required.',
             'phone_number.numeric' => 'Phone Number must contain only numbers.',
             'phone_number.digits_between' => 'Phone Number must be between 8 and 15 digits.',
+            'phone_number.unique' => 'This phone number is already taken.',
 
             'address.required' => 'Address is required.',
             'address.max' => 'Address may not be greater than 255 characters.',

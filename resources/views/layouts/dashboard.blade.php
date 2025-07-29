@@ -123,15 +123,15 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                        <li class="sidebar-item @if (Request::is('departments*')) active @else '' @endif">
+                            <a href="{{ route('departments.index') }}" class="sidebar-link">
                                 <i class="bi bi-briefcase"></i>
                                 <span>Departments</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                        <li class="sidebar-item @if (Request::is('roles*')) active @else '' @endif">
+                            <a href="{{ route('roles.index') }}" class="sidebar-link">
                                 <i class="bi bi-tag"></i>
                                 <span>Roles</span>
                             </a>

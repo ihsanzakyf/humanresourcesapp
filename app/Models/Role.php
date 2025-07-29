@@ -19,4 +19,19 @@ class Role extends Model
     {
         return $this->hasMany(Employee::class);
     }
+
+    public static function filteringRoles($bulan, $tahun)
+    {
+        $query = self::query()->whereNotNull('created_at');
+
+        if (!empty($bulan)) {
+            $query->whereMonth('created_at', $bulan);
+        }
+
+        if (!empty($tahun)) {
+            $query->whereYear('created_at', $tahun);
+        }
+
+        return $query->orderByDesc('created_at')->get();
+    }
 }

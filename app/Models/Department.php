@@ -22,4 +22,23 @@ class Department extends Model
     {
         return $this->hasMany(Employee::class);
     }
+
+    public static function filteringDepartments($bulan, $tahun, $status)
+    {
+        $query = self::query()->whereNotNull('created_at');
+
+        if (!empty($bulan)) {
+            $query->whereMonth('created_at', $bulan);
+        }
+
+        if (!empty($tahun)) {
+            $query->whereYear('created_at', $tahun);
+        }
+
+        if (!empty($status)) {
+            $query->where('status', $status);
+        }
+
+        return $query->get();
+    }
 }
