@@ -21,6 +21,9 @@
     <!-- Flatpickr -->
     <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.css') }}">
 
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <style>
         /* Untuk Chrome, Safari, Edge, Opera */
         input[type=number]::-webkit-inner-spin-button,
@@ -42,8 +45,23 @@
             font-size: 12px;
         }
 
-        .rounded-cs {
+        .select2 {
+            border-radius: 10px !important;
+            font-size: 12px;
+        }
+
+        .select2-search__field {
             border-radius: 10px;
+            font-size: 13px;
+        }
+
+        .select2-container--default .select2-selection--single.is-invalid {
+            border: 1px solid #dc3545 !important;
+            border-radius: 0.2rem !important;
+        }
+
+        .rounded-cs {
+            border-radius: 10px !important;
             font-size: 13px;
         }
     </style>
@@ -137,17 +155,17 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                        <li class="sidebar-item @if (Request::is('presences*')) active @else '' @endif">
+                            <a href="{{ route('presences.index') }}" class="sidebar-link">
                                 <i class="bi bi-table"></i>
                                 <span>Persences</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                        <li class="sidebar-item @if (Request::is('payrolls*')) active @else '' @endif">
+                            <a href="{{ route('payrolls.index') }}" class="sidebar-link">
                                 <i class="bi bi-currency-dollar"></i>
-                                <span>Payroll</span>
+                                <span>Payrolls</span>
                             </a>
                         </li>
 
@@ -188,6 +206,7 @@
             </footer>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('mazer/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('mazer/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
@@ -207,12 +226,37 @@
     <!-- Flatpickr -->
     <script src="{{ asset('mazer/dist/assets/extensions/flatpickr/flatpickr.js') }}"></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script type="text/javascript">
-        const date = flatpickr('.date', {
-            dateFormat: 'Y-m-d',
-            enableTime: false,
+        // const date = flatpickr('.date', {
+        //     dateFormat: 'Y-m-d',
+        //     enableTime: false,
+        // });
+
+        $(document).ready(function() {
+            $('.date').flatpickr({
+                dateFormat: 'Y-m-d',
+                enableTime: false,
+            });
+
+            $('.time').flatpickr({
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: 'H:i',
+                time_24hr: true,
+            });
+
+            $('.select2').select2({
+                placeholder: "Pilih opsi",
+                allowClear: true,
+                width: '100%',
+            });
+
+            @error('employee_id')
+                $('#employee_id').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+            @enderror
         });
     </script>
     @stack('scripts')

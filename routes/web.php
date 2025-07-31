@@ -3,6 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TaskController;
@@ -19,6 +21,8 @@ Route::resource('/tasks', TaskController::class);
 Route::resource('/employees', EmployeeController::class);
 Route::resource('/departments', DepartmentController::class);
 Route::resource('/roles', RoleController::class);
+Route::resource('/presences', PresenceController::class);
+Route::resource('/payrolls', PayrollController::class);
 
 Route::get('/tasks/{id}/done', [TaskController::class, 'done'])->name('tasks.done');
 Route::get('/tasks/{id}/pending', [TaskController::class, 'pending'])->name('tasks.pending');
