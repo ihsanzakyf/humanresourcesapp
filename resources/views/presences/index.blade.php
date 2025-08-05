@@ -67,10 +67,12 @@
 
                         <button class="btn btn-sm btn-danger rounded-cs me-2" id="clearSearch" onclick="clearSearch()">Clear
                             Search</button>
+                        {{-- @if (session('role') == 'HR') --}}
                         <a href="{{ route('presences.create') }}"
                             class="btn btn-sm btn-primary rounded-cs align-self-start">
                             <i class="bi bi-plus"></i> Add New
                         </a>
+                        {{-- @endif --}}
                     </div>
                 </div>
 
@@ -84,8 +86,11 @@
                                 <th>Fullname</th>
                                 <th>Check In</th>
                                 <th>Check Out</th>
-                                {{-- <th>Date</th> --}}
+                                <th>Date</th>
                                 <th>Status</th>
+                                @if (session('role') == 'HR')
+                                    <th>Options</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody id="employee-table-body">
@@ -93,14 +98,14 @@
                                 <tr>
                                     <td>{{ $presence->employee_fullname ?? '-' }}</td>
                                     <td>
-                                        {{ \Carbon\Carbon::parse($presence->date)->translatedFormat('d F Y') }} <br>
-                                        <small>{{ \Carbon\Carbon::parse($presence->check_in)->format('H:i:s') }}</small>
+                                        <small>{{ \Carbon\Carbon::parse($presence->check_in)->format('H:i') }}</small>
                                     </td>
                                     <td>
-                                        {{ \Carbon\Carbon::parse($presence->date)->translatedFormat('d F Y') }} <br>
-                                        <small>{{ \Carbon\Carbon::parse($presence->check_out)->format('H:i:s') }}</small>
+                                        <small>
+                                            {{ $presence->check_out ? \Carbon\Carbon::parse($presence->check_out)->format('H:i') : '00:00' }}
+                                        </small>
                                     </td>
-                                    {{-- <td>{{ $presence->date->format('d F Y') }}</td> --}}
+                                    <td>{{ \Carbon\Carbon::parse($presence->date)->format('d F Y') }}</td>
                                     <td>
                                         @if ($presence->status == 'present')
                                             <span class="badge bg-success rounded-cs">Present</span>
@@ -108,48 +113,44 @@
                                             <span class="badge bg-danger rounded-cs">Absent</span>
                                         @endif
                                     </td>
-                                    <td>
-                                        <div class="btn-group mb-1">
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary btn-sm rounded-cs dropdown-toggle me-1"
-                                                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    Actions
-                                                </button>
-                                                <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton"
-                                                    style="min-width: 40px;">
-                                                    {{-- <a href="{{ route('presences.show', $presence->id) }}"
+                                    @if (session('role') == 'HR')
+                                        <td>
+                                            <div class="btn-group mb-1">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary btn-sm rounded-cs dropdown-toggle me-1"
+                                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton"
+                                                        style="min-width: 40px;">
+                                                        {{-- <a href="{{ route('presences.show', $presence->id) }}"
                                                         class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
                                                         style="background-color:#0dcaf0;">
                                                         <i class="bi bi-eye me-1"></i> View
                                                     </a> --}}
 
-                                                    <a href="{{ route('presences.edit', $presence->id) }}"
-                                                        class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
-                                                        style="background-color:#0d6efd;">
-                                                        <i class="bi bi-pencil me-1"></i> Edit
-                                                    </a>
 
-                                                    <form id="form-delete-{{ $presence->id }}" method="POST"
-                                                        class="d-inline"
-                                                        action="{{ route('presences.destroy', $presence->id) }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button"
-                                                            class="dropdown-item btn btn-sm text-white rounded-cs"
-                                                            data-swal-form-id="form-delete-{{ $presence->id }}"
-                                                            style="background-color:#dc3545;">
-                                                            <i class="bi bi-trash me-1"></i> Delete
-                                                        </button>
-                                                    </form>
+                                                        <form id="form-delete-{{ $presence->id }}" method="POST"
+                                                            class="d-inline"
+                                                            action="{{ route('presences.destroy', $presence->id) }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button"
+                                                                class="dropdown-item btn btn-sm text-white rounded-cs"
+                                                                data-swal-form-id="form-delete-{{ $presence->id }}"
+                                                                style="background-color:#dc3545;">
+                                                                <i class="bi bi-trash me-1"></i> Delete
+                                                            </button>
+                                                        </form>
 
-                                                    <x-sweetalertaction form-id="form-delete-{{ $presence->id }}"
-                                                        action="delete" />
-
+                                                        <x-sweetalertaction form-id="form-delete-{{ $presence->id }}"
+                                                            action="delete" />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                     </table>

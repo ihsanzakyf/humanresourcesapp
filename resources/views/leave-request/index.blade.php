@@ -22,7 +22,7 @@
                                 <a href="{{ route('dashboard') }}">Dashboard</a>
                             </li>
                             <li class="breadcrumb-item" aria-current="page">
-                                Payrolls
+                                Leave Requests
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
                                 Index
@@ -67,12 +67,10 @@
 
                         <button class="btn btn-sm btn-danger rounded-cs me-2" id="clearSearch" onclick="clearSearch()">Clear
                             Search</button>
-                        @if (session('role') == 'HR')
-                            <a href="{{ route('payrolls.create') }}"
-                                class="btn btn-sm btn-primary rounded-cs align-self-start">
-                                <i class="bi bi-plus"></i> Add New
-                            </a>
-                        @endif
+                        <a href="{{ route('leave-requests.create') }}"
+                            class="btn btn-sm btn-primary rounded-cs align-self-start">
+                            <i class="bi bi-plus"></i> Add New
+                        </a>
                     </div>
                 </div>
 
@@ -83,74 +81,90 @@
                     <table class="table table-striped" id="table1">
                         <thead>
                             <tr>
+                                <th>No</th>
                                 <th>Fullname</th>
-                                <th>Salary</th>
-                                <th>Bonuses</th>
-                                <th>Deductions</th>
-                                <th>Net Salary</th>
-                                <th>Pay Date</th>
-                                <th>Options</th>
+                                <th>Leave Type</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Status</th>
+                                @if (session('role') == 'HR')
+                                    <th>Options</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody id="payroll-table-body">
-                            @foreach ($payrolls as $payroll)
+                            @foreach ($leaveRequests as $leaveRequest)
                                 <tr>
-                                    <td>{{ $payroll->fullname ?? '-' }}</td>
-                                    <td>{{ number_format($payroll->salary, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($payroll->bonuses, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($payroll->deductions, 0, ',', '.') }}</td>
-                                    <td>{{ number_format($payroll->net_salary, 0, ',', '.') }}</td>
-                                    <td>
-                                        {{ \Carbon\Carbon::parse($payroll->pay_date)->translatedFormat('d F Y') }}
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $leaveRequest->fullname }}</td>
+                                    <td>{{ ucfirst($leaveRequest->leave_type) }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($leaveRequest->start_date)->translatedFormat('d F Y') }}
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($leaveRequest->end_date)->translatedFormat('d F Y') }}
                                     </td>
                                     <td>
-                                        <div class="btn-group mb-1">
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary btn-sm rounded-cs dropdown-toggle me-1"
-                                                    type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    Actions
-                                                </button>
-                                                <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton"
-                                                    style="min-width: 40px;">
-                                                    {{-- <a href="{{ route('payrolls.show', $payroll->id) }}"
-                                                        class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
-                                                        style="background-color:#0dcaf0;">
-                                                        <i class="bi bi-eye me-1"></i> View
-                                                    </a> --}}
+                                        @if ($leaveRequest->status == 'approved')
+                                            <span class="text-success">Success</span>
+                                        @elseif ($leaveRequest->status == 'rejected')
+                                            <span class="text-danger">Rejected</span>
+                                        @else
+                                            <span class="text-warning">Pending</span>
+                                        @endif
+                                    </td>
+                                    @if (session('role') == 'HR')
+                                        <td>
+                                            <div class="btn-group mb-1">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary btn-sm rounded-cs dropdown-toggle me-1"
+                                                        type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton"
+                                                        style="min-width: 40px;">
+                                                        @if ($leaveRequest->status == 'pending' || $leaveRequest->status == 'approved')
+                                                            <a href="{{ route('leave-requests.reject', $leaveRequest->id) }}"
+                                                                class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
+                                                                style="background-color:#434a5d;">
+                                                                <i class="bi bi-x me-1"></i> Reject
+                                                            </a>
+                                                        @endif
 
-                                                    <a href="{{ route('payrolls.show', $payroll->id) }}"
-                                                        class="dropdown-item btn btn-sm mb-1 text-white rounded-cs"
-                                                        style="background-color:#0dcaf0;">
-                                                        <i class="bi bi-wallet me-1"></i> Salary Slip
-                                                    </a>
-                                                    @if (session('role') == 'HR')
-                                                        <a href="{{ route('payrolls.edit', $payroll->id) }}"
+                                                        @if ($leaveRequest->status == 'pending' || $leaveRequest->status == 'rejected')
+                                                            <a href="{{ route('leave-requests.confirm', $leaveRequest->id) }}"
+                                                                class="dropdown-item btn btn-sm mb-1 text-white rounded-cs"
+                                                                style="background-color:green;">
+                                                                <i class="bi bi-check me-1"></i> Confirm
+                                                            </a>
+                                                        @endif
+
+                                                        <a href="{{ route('leave-requests.edit', $leaveRequest->id) }}"
                                                             class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
                                                             style="background-color:#0d6efd;">
                                                             <i class="bi bi-pencil me-1"></i> Edit
                                                         </a>
 
-                                                        <form id="form-delete-{{ $payroll->id }}" method="POST"
+                                                        <form id="form-delete-{{ $leaveRequest->id }}" method="POST"
                                                             class="d-inline"
-                                                            action="{{ route('payrolls.destroy', $payroll->id) }}">
+                                                            action="{{ route('leave-requests.destroy', $leaveRequest->id) }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="button"
                                                                 class="dropdown-item btn btn-sm text-white rounded-cs"
-                                                                data-swal-form-id="form-delete-{{ $payroll->id }}"
+                                                                data-swal-form-id="form-delete-{{ $leaveRequest->id }}"
                                                                 style="background-color:#dc3545;">
                                                                 <i class="bi bi-trash me-1"></i> Delete
                                                             </button>
                                                         </form>
 
-                                                        <x-sweetalertaction form-id="form-delete-{{ $payroll->id }}"
+                                                        <x-sweetalertaction form-id="form-delete-{{ $leaveRequest->id }}"
                                                             action="delete" />
-                                                    @endif
+
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                     </table>

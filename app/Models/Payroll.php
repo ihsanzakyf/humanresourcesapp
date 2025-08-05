@@ -23,6 +23,9 @@ class Payroll extends Model
 
     public static function getIndexPayrolls()
     {
+        $role = session('role');
+        $employeeId = auth()->user()->employee_id;
+
         $sql = "
         SELECT
             p.id,
@@ -36,10 +39,20 @@ class Payroll extends Model
         FROM payrolls p
         LEFT JOIN employees e ON p.employee_id = e.id
         WHERE p.deleted_at IS NULL
-        AND e.deleted_at IS NULL
-        ORDER BY p.pay_date DESC";
+        AND e.deleted_at IS NULL";
 
-        return DB::select($sql);
+
+        $bindings = [];
+
+        // Batasi jika bukan HR
+        if ($role !== 'HR') {
+            $sql .= " AND p.employee_id = ?";
+            $bindings[] = $employeeId;
+        }
+
+        $sql .= " ORDER BY p.pay_date DESC";
+
+        return DB::select($sql, $bindings);
     }
 
     public static function filteringPayrolls($bulan, $tahun, $start, $end)

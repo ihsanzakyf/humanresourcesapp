@@ -24,6 +24,9 @@
     <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
     <style>
         /* Untuk Chrome, Safari, Edge, Opera */
         input[type=number]::-webkit-inner-spin-button,
@@ -71,16 +74,23 @@
 
 <body>
     <script src="{{ asset('mazer/dist/assets/static/js/initTheme.js') }}"></script>
+
     <div id="app">
         <div id="sidebar">
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header position-relative">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="logo">
-                            <a href="index.html"><img src="{{ asset('mazer/dist/assets/compiled/svg/logo.svg') }}"
-                                    alt="Logo" srcset="" /></a>
+                            <a href="index.html">
+                                <svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
+                                    <text x="10" y="40" font-family="Arial" font-weight="bold" font-size="40"
+                                        fill="#435EBE">
+                                        Human.
+                                    </text>
+                                </svg>
+                            </a>
                         </div>
-                        <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
+                        <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20"
                                 height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
@@ -98,8 +108,8 @@
                                 </g>
                             </svg>
                             <div class="form-check form-switch fs-6">
-                                <input class="form-check-input me-0" type="checkbox" id="toggle-dark"
-                                    style="cursor: pointer" />
+                                <input class="form-check-input  me-0" type="checkbox" id="toggle-dark"
+                                    style="cursor: pointer">
                                 <label class="form-check-label"></label>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -110,7 +120,7 @@
                                 </path>
                             </svg>
                         </div>
-                        <div class="sidebar-toggler x">
+                        <div class="sidebar-toggler  x">
                             <a href="#" class="sidebar-hide d-xl-none d-block"><i
                                     class="bi bi-x bi-middle"></i></a>
                         </div>
@@ -120,72 +130,96 @@
                     <ul class="menu">
                         <li class="sidebar-title">Menu</li>
 
-                        <li class="sidebar-item @if (Request::is('dashboard')) active @else '' @endif">
-                            <a href="{{ route('dashboard') }}" class="sidebar-link">
-                                <i class="bi bi-grid-fill"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
+                        @if (session('role') == 'HR')
+                            <li class="sidebar-item @if (Request::is('dashboard')) active @else '' @endif"">
+                                <a href="{{ url('/dashboard') }}" class='sidebar-link'>
+                                    <i class="bi bi-grid-fill"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('tasks*')) active @else '' @endif"">
+                                <a href="{{ url('/tasks') }}" class='sidebar-link'>
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Tasks</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('employees*')) active @else '' @endif"">
+                                <a href="{{ url('/employees') }}" class='sidebar-link'>
+                                    <i class="bi bi-people-fill"></i>
+                                    <span>Employees</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('departments*')) active @else '' @endif"">
+                                <a href="{{ url('/departments') }}" class='sidebar-link'>
+                                    <i class="bi bi-briefcase"></i>
+                                    <span>Departments</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('roles*')) active @else '' @endif"">
+                                <a href="{{ url('/roles') }}" class='sidebar-link'>
+                                    <i class="bi bi-tag"></i>
+                                    <span>Roles</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('presences*')) active @else '' @endif"">
+                                <a href="{{ url('/presences') }}" class='sidebar-link'>
+                                    <i class="bi bi-table"></i>
+                                    <span>Presences</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('payrolls*')) active @else '' @endif"">
+                                <a href="{{ url('/payrolls') }}" class='sidebar-link'>
+                                    <i class="bi bi-currency-dollar"></i>
+                                    <span>Payrolls</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-ite @if (Request::is('leave-requests*')) active @else '' @endif"m">
+                                <a href="{{ url('/leave-requests') }}" class='sidebar-link'>
+                                    <i class="bi bi-shift-fill"></i>
+                                    <span>Leave Requests</span>
+                                </a>
+                            </li>
+                        @endif
 
-                        <li class="sidebar-item @if (Request::is('tasks*')) active @else '' @endif">
-                            <a href="{{ route('tasks.index') }}" class="sidebar-link">
-                                <i class="bi bi-list-task"></i>
-                                <span>Tasks</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item @if (Request::is('employees*')) active @else '' @endif">
-                            <a href="{{ route('employees.index') }}" class="sidebar-link">
-                                <i class="bi bi-people-fill"></i>
-                                <span>Employees</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item @if (Request::is('departments*')) active @else '' @endif">
-                            <a href="{{ route('departments.index') }}" class="sidebar-link">
-                                <i class="bi bi-briefcase"></i>
-                                <span>Departments</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item @if (Request::is('roles*')) active @else '' @endif">
-                            <a href="{{ route('roles.index') }}" class="sidebar-link">
-                                <i class="bi bi-tag"></i>
-                                <span>Roles</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item @if (Request::is('presences*')) active @else '' @endif">
-                            <a href="{{ route('presences.index') }}" class="sidebar-link">
-                                <i class="bi bi-table"></i>
-                                <span>Persences</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item @if (Request::is('payrolls*')) active @else '' @endif">
-                            <a href="{{ route('payrolls.index') }}" class="sidebar-link">
-                                <i class="bi bi-currency-dollar"></i>
-                                <span>Payrolls</span>
-                            </a>
-                        </li>
+                        @if (in_array(session('role'), ['Developer', 'Sales']))
+                            <li class="sidebar-item @if (Request::is('presences*')) active @else '' @endif">
+                                <a href="{{ url('/presences') }}" class='sidebar-link'>
+                                    <i class="bi bi-table"></i>
+                                    <span>Presences</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('tasks*')) active @else '' @endif">
+                                <a href="{{ url('/tasks') }}" class='sidebar-link'>
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Tasks</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('payrolls*')) active @else '' @endif">
+                                <a href="{{ url('/payrolls') }}" class='sidebar-link'>
+                                    <i class="bi bi-currency-dollar"></i>
+                                    <span>Payrolls</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item @if (Request::is('leave-requests*')) active @else '' @endif">
+                                <a href="{{ url('/leave-requests') }}" class='sidebar-link'>
+                                    <i class="bi bi-shift-fill"></i>
+                                    <span>Leave Requests</span>
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
-                                <i class="bi bi-shift-fill"></i>
-                                <span>Leave Request</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item">
-                            <a href="#" class="sidebar-link">
+                            <a href="{{ url('/logout') }}" class='sidebar-link'>
                                 <i class="bi bi-box-arrow-right"></i>
-                                <span>Log Out</span>
+                                <span>Logout</span>
                             </a>
                         </li>
+
                     </ul>
                 </div>
             </div>
         </div>
+        @include('components.sweetalertlocation')
         <div id="main">
 
             @yield('content')
@@ -228,6 +262,9 @@
 
     <!-- Select2 -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script type="text/javascript">
         // const date = flatpickr('.date', {

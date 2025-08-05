@@ -27,6 +27,8 @@ class PresenceRequest extends FormRequest
             'employee_id' => 'required|exists:employees,id',
             'check_in' => 'required|date_format:H:i',
             'check_out' => 'nullable|date_format:H:i|after:check_in',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
             'date' => 'required|date',
             'status' => 'required|in:present,absent,leave,sick,holiday',
         ];

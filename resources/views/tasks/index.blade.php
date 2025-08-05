@@ -38,9 +38,11 @@
                 <div class="card-header">
                     <div class="d-flex">
                         <h5 class="card-title">Task List</h5>
-                        <a href="{{ route('tasks.create') }}" class="btn btn-sm btn-primary ms-auto rounded-cs"><i
-                                class="bi bi-plus"></i>
-                            Add New</a>
+                        @if (session('role') == 'HR')
+                            <a href="{{ route('tasks.create') }}" class="btn btn-sm btn-primary ms-auto rounded-cs"><i
+                                    class="bi bi-plus"></i>
+                                Add New</a>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
@@ -100,27 +102,29 @@
                                                             <i class="bi bi-x me-1"></i> Mark as Pending
                                                         </a>
                                                     @endif
-                                                    <a href="{{ route('tasks.edit', $task->id) }}"
-                                                        class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
-                                                        style="background-color:#0d6efd;">
-                                                        <i class="bi bi-pencil me-1"></i> Edit
-                                                    </a>
+                                                    @if (session('role') == 'HR')
+                                                        <a href="{{ route('tasks.edit', $task->id) }}"
+                                                            class="dropdown-item btn btn-sm text-white mb-1 rounded-cs"
+                                                            style="background-color:#0d6efd;">
+                                                            <i class="bi bi-pencil me-1"></i> Edit
+                                                        </a>
 
-                                                    <form id="form-delete-{{ $task->id }}" method="POST"
-                                                        class="d-inline" action="{{ route('tasks.destroy', $task->id) }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button"
-                                                            class="dropdown-item btn btn-sm text-white rounded-cs"
-                                                            data-swal-form-id="form-delete-{{ $task->id }}"
-                                                            style="background-color:#dc3545;">
-                                                            <i class="bi bi-trash me-1"></i> Delete
-                                                        </button>
-                                                    </form>
+                                                        <form id="form-delete-{{ $task->id }}" method="POST"
+                                                            class="d-inline"
+                                                            action="{{ route('tasks.destroy', $task->id) }}">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button"
+                                                                class="dropdown-item btn btn-sm text-white rounded-cs"
+                                                                data-swal-form-id="form-delete-{{ $task->id }}"
+                                                                style="background-color:#dc3545;">
+                                                                <i class="bi bi-trash me-1"></i> Delete
+                                                            </button>
+                                                        </form>
 
-                                                    <x-sweetalertaction form-id="form-delete-{{ $task->id }}"
-                                                        action="delete" />
-
+                                                        <x-sweetalertaction form-id="form-delete-{{ $task->id }}"
+                                                            action="delete" />
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
