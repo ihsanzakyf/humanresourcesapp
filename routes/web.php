@@ -13,10 +13,13 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [AuthenticatedSessionController::class, 'create']);
+Route::get('/', function () {
+    return redirect('/login');
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware(['role:HR,Developer']);
+    Route::get('/dashboard/presence', [DashboardController::class, 'presence']);
     Route::resource('/tasks', TaskController::class)->middleware(['role:Developer,HR']);
     Route::resource('/employees', EmployeeController::class)->middleware(['role:HR']);
     Route::resource('/departments', DepartmentController::class)->middleware(['role:HR']);

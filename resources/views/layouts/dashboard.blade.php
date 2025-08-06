@@ -27,6 +27,9 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
+    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/extensions/@icon/dripicons/dripicons.css') }}">
+    <link rel="stylesheet" href="{{ asset('mazer/dist/assets/compiled/css/ui-icons-dripicons.css') }}">
+
     <style>
         /* Untuk Chrome, Safari, Edge, Opera */
         input[type=number]::-webkit-inner-spin-button,
@@ -85,7 +88,7 @@
                                 <svg width="200" height="60" xmlns="http://www.w3.org/2000/svg">
                                     <text x="10" y="40" font-family="Arial" font-weight="bold" font-size="40"
                                         fill="#435EBE">
-                                        Human.
+                                        HR
                                     </text>
                                 </svg>
                             </a>
@@ -182,6 +185,12 @@
                         @endif
 
                         @if (in_array(session('role'), ['Developer', 'Sales']))
+                            <li class="sidebar-item @if (Request::is('dashboard')) active @else '' @endif"">
+                                <a href="{{ url('/dashboard') }}" class='sidebar-link'>
+                                    <i class="bi bi-grid-fill"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
                             <li class="sidebar-item @if (Request::is('presences*')) active @else '' @endif">
                                 <a href="{{ url('/presences') }}" class='sidebar-link'>
                                     <i class="bi bi-table"></i>
@@ -241,14 +250,11 @@
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="{{ asset('mazer/dist/assets/static/js/components/dark.js') }}"></script>
     <script src="{{ asset('mazer/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
     <script src="{{ asset('mazer/dist/assets/compiled/js/app.js') }}"></script>
-
-    <!-- Need: Apexcharts -->
-    <script src="{{ asset('mazer/dist/assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('mazer/dist/assets/static/js/pages/dashboard.js') }}"></script>
 
     <!-- Perfect Scrollbar -->
     <script src="{{ asset('mazer/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.common.js') }}"></script>
@@ -266,13 +272,56 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-    <script type="text/javascript">
-        // const date = flatpickr('.date', {
-        //     dateFormat: 'Y-m-d',
-        //     enableTime: false,
-        // });
+    <!-- Chart.Js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {{-- <script src="{{ asset('mazer/assets/extensions/chart.js/chart.umd.js') }}"></script>
+    <script src="{{ asset('mazer/assets/static/js/pages/ui-chartjs.js') }}"></script> --}}
 
+    <script type="text/javascript">
         $(document).ready(function() {
+            const ctxBar = $('#presence')[0].getContext('2d');
+            const myBar = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+                        'August', 'September', 'October', 'November', 'December'
+                    ],
+                    datasets: [{
+                        label: 'Total',
+                        data: [],
+                        backgroundColor: 'rgba(63, 82, 227, 1)',
+                        borderColor: '#57CAEB',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Latest Presence',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            function updateChart() {
+                fetch('/dashboard/presence')
+                    .then(response => response.json())
+                    .then((output) => {
+                        myBar.data.datasets[0].data = output;
+                        myBar.update();
+                    })
+                    .catch(error => console.error('Error fetching data:', error));
+            }
+
+            updateChart();
+            setInterval(updateChart, 5000);
+
             $('.date').flatpickr({
                 dateFormat: 'Y-m-d',
                 enableTime: false,

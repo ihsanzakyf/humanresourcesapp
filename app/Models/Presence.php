@@ -23,6 +23,30 @@ class Presence extends Model
         'status',
     ];
 
+    public static function getChartPresences()
+    {
+        $results = DB::select("
+        SELECT
+            MONTH(date) AS month,
+            COUNT(*) AS total
+        FROM presences
+        WHERE YEAR(date) = YEAR(CURDATE()) AND deleted_at IS NULL
+        GROUP BY MONTH(date)
+    ");
+
+        $data = [];
+        for ($i = 0; $i < 12; $i++) {
+            $data[$i] = 0; // inisialisasi index 0–11
+        }
+
+        foreach ($results as $row) {
+            $index = (int)$row->month - 1;
+            $data[$index] = (int)$row->total;
+        }
+
+        return $data;
+    }
+
     public static function getIndexPresences()
     {
         $role = session('role');

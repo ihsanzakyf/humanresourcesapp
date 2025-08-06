@@ -245,7 +245,7 @@
                     const distance = map.distance(officeLatLng, userLatLng);
 
                     if (distance <= maxDistance) {
-                        // locationAlert.success('Anda berada di dalam radius kantor.');
+                        locationAlert.success('Anda berada di dalam radius kantor.');
                         btnPresence.removeAttr('disabled');
                     } else {
                         locationAlert.error('Anda berada di luar radius kantor.');

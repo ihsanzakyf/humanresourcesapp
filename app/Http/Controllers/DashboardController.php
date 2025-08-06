@@ -22,6 +22,19 @@ class DashboardController extends Controller
         $presences = Presence::count();
         $tasks = Task::get();
 
-        return view('dashboard.index');
+        return view('dashboard.index', [
+            'employees' => $employees,
+            'departments' => $departments,
+            'payrolls' => $payrolls,
+            'presences' => $presences,
+            'tasks' => $tasks
+        ]);
+    }
+
+    public function presence()
+    {
+        $data = Presence::getChartPresences();
+
+        return response()->json($data);
     }
 }
