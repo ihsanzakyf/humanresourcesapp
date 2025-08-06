@@ -87,10 +87,15 @@ Aplikasi ini dibuat sebagai bahan studi kasus untuk belajar pengembangan web men
 
 ---
 
-## ✅ **Akses Default**
-Jika menggunakan seeder:
+## ✅ **Akses HR**
 ```
-Email: admin@example.com
+Email: test@example.com
+Password: password
+```
+
+## ✅ **Akses Developer**
+```
+Email: developer@example.com
 Password: password
 ```
 
