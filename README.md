@@ -95,7 +95,7 @@ Password: password
 
 ## ✅ **Akses Developer**
 ```
-Email: developer@example.com
+Email: developer@mail.com
 Password: password
 ```
 
