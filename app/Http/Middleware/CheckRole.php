@@ -12,7 +12,7 @@ class CheckRole
     public function handle(Request $request, Closure $next, string ...$roles)
     {
         // Dapatkan employee id nya.
-        $employeeID = auth()->user()->employee_id;
+        $employeeID = Auth::user()->employee_id;
 
         // Cari tahu rolenya.
         $employee = Employee::find($employeeID);
