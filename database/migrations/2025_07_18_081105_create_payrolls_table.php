@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payroll', function (Blueprint $table) {
+        Schema::create('payrolls', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')
                 ->nullable()
@@ -33,7 +33,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('payroll', function (Blueprint $table) {
+        Schema::table('payrolls', function (Blueprint $table) {
             $table->dropForeign(['employee_id']);
         });
 

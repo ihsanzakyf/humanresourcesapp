@@ -118,7 +118,7 @@ class HumanResourceSeeder extends Seeder
             ];
         }
 
-        DB::table('payroll')->insert($payroll);
+        DB::table('payrolls')->insert($payroll);
 
         $presences = [];
 
